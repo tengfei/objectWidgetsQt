@@ -1,2 +1,3 @@
 setOldClass("QIcon")
-## setOldClass("QWidget")
+setClass("Qt", contains = "VIRTUAL")
+

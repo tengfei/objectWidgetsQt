@@ -3,6 +3,7 @@ import(qtbase)
 import(objectSignals)
 import(objectProperties)
 import(objectWidgets)
+exportPattern("^[^\\.]")
 ## exportPattern("^[^\\.]")
 ## exportClasses(AnnotatedWidget, Item, Group, IModeGroup)
 

@@ -1,7 +1,6 @@
-library(cranvas)
-library(objectWidgets)
 library(qtbase)
 library(qtpaint)
+library(objectWidgetsQt)
 ## ColorEnum is a special single Enum object
 nm <- setColorEnum("red", levels = c("red", "black"))
 ## create an example of SingleEnum for geom 
@@ -50,13 +49,15 @@ gpar.gen <- setRefClass("GraphicPars", fields = properties(list(a = "character",
 obj <- gpar.gen$new()
 obj$properties()
 obj$a
-ControlPanel(obj)
-p
-library(cranvas)
+objectWidgetsQt:::ControlPanel(obj)
+## p
+
 mf <- qdata(mtcars)
 p <- qscatter(mpg, cyl, data = mf)
+str(p$meta)
 p$meta$changed$connect(function(){qupdate(p$scene)})
 ControlPanel(p$meta)
+p
 str(p$meta)
 
 ControlPanel(obj, visible = list(a = TRUE,

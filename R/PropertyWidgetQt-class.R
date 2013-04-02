@@ -1,40 +1,9 @@
-## setRefClass("PropertyWidgetQt", contains = "PropertyWidget")
-PropertySetWQT.gen <- setRefClass("PropertySetWidgetQt",
-                                  contains = c("PropertySet", "PropertyWidgetQt"))
-
-setMethod("widget", "PropertySetWidgetQt", function())
-## ColorWQT.gen <- setRefClass("ColorWidgetQt", contains = c("Color", "PropertyWidgetQt"))
-## ColorWQT.gen$methods(
-##   widget = function(){
-##     C
-##   }
-##   )
-## ColorEnumWQT.gen <- setRefClass("ColorEnumWidgetQt", contains = c("ColorEnum", "PropertyWidgetQt"))
-## GlyphEnumWQT.gen <- setRefClass("GlyphEnumWidgetQt", contains = c("GlyphEnum", "PropertyWidgetQt"))
-## SingleEnumWQT.gen <- setRefClass("SingleEnumWidgetQt",
-##                                  contains = c("SingleEnum", "PropertyWidgetQt"))
-## MultipleEnumWQT.gen <- setRefClass("MultilpleEnumWidgetQt",
-##                                    contains = c("MultipleEnum", "PropertyWidgetQt"))
-## PositiveIntegerWQT.gen <- setRefClass("PositiveIntegerWidgetQt",
-##                                       contains = c("PositiveInteger", "PropertyWidgetQt"))
-## NegativeIntegerWTQ.gen <- setRefClass("NegativeIntegerWidgetQt",
-##                                       contains = c("NegativeInteger", "PropertyWidgetQt"))
-## NonpositiveIntegerWQT.gen <- setRefClass("NonpositiveIntegerWidgetQt",
-##                                          contains = c("NonpositiveInteger", "PropertyWidgetQt"))
-## NonnegativeIntegerWQT.gen <- setRefClass("NonnegativeIntegerWidgetQt",
-##                                           contains = c("NonnegativeInteger", "PropertyWidgetQt"))
-## NumericWithRangeWQT.gen <- setRefClass("NumericWithRangeWidgetQt",
-##                                        contains = c("NumericWithRange", "PropertyWidgetQt"))
-## ## setRefClass("IntegerWithRangeWidgetQt", contains = c("IntegerWithRange", "PropertyWidgetQt"))
-## NumericWith01WQT.gen <- setRefClass("NumericWithMin0Max1WidgetQt",
-##                                     contains = c("NumericWithMin0Max1", "PropertyWidgetQt"))
-
-
-
-## define all widget
+setRefClass("PropertySetWidgetQt",
+            contains = c("Qt", "PropertySetWidget"))
 ColorWQT <- qsetClass("ColorWidgetQt", Qt$QWidget, function(obj, par, parent = NULL) {
   super(parent)
-  this$obj <- obj; this$par <- par
+  this$obj <- obj
+  this$par <- par
   initColor <- obj$field(par)
   #parInfo <- obj$output()$parinfo[names(obj$output()$parinfo) == par]
   #this$parLabel <- Qt$QLabel(paste(parInfo,":",sep=""))
@@ -61,7 +30,7 @@ ColorWQT <- qsetClass("ColorWidgetQt", Qt$QWidget, function(obj, par, parent = N
   qconnect(parEdit, "editingFinished", function() {
     setValue(parEdit$text)
   })
-
+  
   lyt <- Qt$QHBoxLayout()
   #lyt$addWidget(parLabel,1,Qt$Qt$AlignRight)
   lyt$addWidget(parSwatch)
@@ -96,8 +65,6 @@ qsetMethod("setDefault", ColorWidgetQt, function() {
   parSwatch$setStyleSheet(paste("background-color:",clr,sep=""))
   parEdit$setText(clr)  
 })
-
-
 
 
 # widget to handle changing colors
@@ -569,51 +536,51 @@ qsetMethod("setDefault", CharWidgetQt, function() {
   parEdit$setText(txt)  
 })
 
-# function
-qsetClass("functionWidgetQt", Qt$QWidget, function(obj, par, parent = NULL) {
-  super(parent)
-  this$obj <- obj; this$par <- par
+## # function
+## qsetClass("functionWidgetQt", Qt$QWidget, function(obj, par, parent = NULL) {
+##   super(parent)
+##   this$obj <- obj; this$par <- par
 
-  initText <- body(obj$field(par))[2]
-  initText <- deparse(initText)
+##   initText <- body(obj$field(par))[2]
+##   initText <- deparse(initText)
 
-  this$parEdit <- Qt$QTextEdit(initText)
-  parEdit$LineWrapMode
-  sort(ls(parEdit))
-  fl <- tempfile()
-  class(initText)
+##   this$parEdit <- Qt$QTextEdit(initText)
+##   parEdit$LineWrapMode
+##   sort(ls(parEdit))
+##   fl <- tempfile()
+##   class(initText)
 
-  cat(paste(initText, collapse = "\n"), file =fl)
-  system(paste("less", fl))
-   temp <- gsub("<-", "=", initText)
-Qt$QTextEdit(temp)
-  qconnect(parEdit, "editingFinished", function() {
-    setValue(parEdit$text)
-  })
+##   cat(paste(initText, collapse = "\n"), file =fl)
+##   system(paste("less", fl))
+##    temp <- gsub("<-", "=", initText)
+## Qt$QTextEdit(temp)
+##   qconnect(parEdit, "editingFinished", function() {
+##     setValue(parEdit$text)
+##   })
 
-  lyt <- Qt$QHBoxLayout()
-  lyt$addWidget(parEdit)
-  setLayout(lyt)
-})
+##   lyt <- Qt$QHBoxLayout()
+##   lyt$addWidget(parEdit)
+##   setLayout(lyt)
+## })
 
-qsetMethod("getPar", functionWidgetQt, function() {
-  par
-})
+## qsetMethod("getPar", functionWidgetQt, function() {
+##   par
+## })
 
-qsetMethod("getValue", functionWidgetQt, function() {
-  parEdit$text
-})
+## qsetMethod("getValue", functionWidgetQt, function() {
+##   parEdit$text
+## })
 
 # also updates the obj object
-qsetMethod("setValue", functionWidgetQt, function(txt) {
-    parEdit$setText(txt)
-    eval(parse(text=paste("obj$",par," <- parEdit$text",sep="")))
-})
+## qsetMethod("setValue", functionWidgetQt, function(txt) {
+##     parEdit$setText(txt)
+##     eval(parse(text=paste("obj$",par," <- parEdit$text",sep="")))
+## })
 
-qsetMethod("setDefault", functionWidgetQt, function() {
-  txt <- body(obj$field(par))[2]
-  parEdit$setText(txt)  
-})
+## qsetMethod("setDefault", functionWidgetQt, function() {
+##   txt <- body(obj$field(par))[2]
+##   parEdit$setText(txt)  
+## })
 
 # label for a given parameter, with appropriate text and tooltip
 qsetClass("ParLabel", Qt$QLabel, function(obj, par, parent = NULL) {
@@ -626,7 +593,6 @@ qsetClass("ParLabel", Qt$QLabel, function(obj, par, parent = NULL) {
   setText(paste(parInfo,":",sep=""))
   ## setToolTip(
   ##   obj$output()$tooltipinfo[names(obj$output()$tooltipinfo) == par])
-    
 })
 
 
@@ -640,3 +606,170 @@ decimalplaces <- function(x) {
 }
 
 
+
+setClass("ColorWidgetQt",
+            contains = c("ColorWidget", "Qt"))
+setMethod("widget", "ColorWidgetQt", function(obj, ...){
+  ColorWidgetQt(obj, ...)
+})
+
+
+setClass("ColorEnumWidgetQt",
+            contains = c("ColorEnumWidget", "Qt"))
+setMethod("widget", "ColorEnumWidgetQt", function(obj, ...){
+  ColorEnumWidgetQt(obj, ...)
+})
+
+
+setClass("GlyphEnumWidgetQt",
+            contains = c("GlyphEnumWidget", "Qt"))
+setMethod("widget", "GlyphEnumWidgetQt", function(obj, ...){
+  GlyphEnumWidgetQt(obj, ...)  
+})
+
+
+
+setClass("SingleEnumWidgetQt", 
+            contains = c("SingleEnumWidget", "Qt"))
+setMethod("widget", "SingleEnumWidgetQt", function(obj, ...){
+  SingleEnumWidgetQt(obj, ...)  
+})
+
+
+setClass("MultipleEnumWidgetQt",
+            contains = c("MultipleEnumWidget", "Qt"))
+setMethod("widget", "MultipleEnumWidgetQt", function(obj, ...){
+  MultipleEnumWidgetQt(obj, ...)  
+})
+
+
+
+setClass("PositiveIntegerWidgetQt",
+            contains = c("PositiveIntegerWidget", "Qt"))
+setMethod("widget", "PositiveIntegerWidgetQt", function(obj, ...){
+  IntWidgetQt(obj, ...)  
+})
+
+
+
+setClass("NegativeIntegerWidgetQt",
+            contains = c("NegativeIntegerWidget", "Qt"))
+setMethod("widget", "NegativeIntegerWidgetQt", function(obj, ...){
+  IntWidgetQt(obj, ...)  
+})
+
+
+setClass("NonpositiveIntegerWidgetQt",
+            contains = c("NonpositiveIntegerWidget", "Qt"))
+setMethod("widget", "NonpositiveIntegerWidgetQt", function(obj, ...){
+  IntWidgetQt(obj, ...)  
+})
+
+
+setClass("NonnegativeIntegerWidgetQt",
+            contains = c("NonnegativeIntegerWidget", "Qt"))
+setMethod("widget", "NonnegativeIntegerWidgetQt", function(obj, ...){
+  IntWidgetQt(obj, ...)  
+})
+
+
+setClass("NumericWithRangeWidgetQt",
+            contains = c("NumericWithRangeWidget", "Qt"))
+setMethod("widget", "NumericWithRangeWidgetQt", function(obj, ...){
+  RangeWidgetQt(obj, ...)  
+})
+
+
+setClass("NumericWithMin0Max1WidgetQt",
+            contains = c("NumericWithMin0Max1Widget", "Qt"))
+setMethod("widget", "NumericWithMin0Max1WidgetQt", function(obj, ...){
+  RangeWidgetQt(obj, ...)  
+})
+
+
+setClass("logicalWidgetQt",
+            contains = c("logicalWidget", "Qt"))
+setMethod("widget", "logicalWidgetQt", function(obj, ...){
+  logicalWidgetQt(obj, ...)  
+})
+
+
+setClass("characterWidgetQt",
+          contains = c("characterWidget", "Qt"))
+setMethod("widget", "characterWidgetQt", function(obj, ...){
+  CharWidgetQt(obj, ...)
+})
+
+
+
+## setRefClass("factorWidgetQt",
+##             methods = list(
+##               widget = function(){
+##                 WidgetQt(.self)
+##               }
+##               ),
+
+##             contains = c("factorWidget", "Qt"))
+
+## setRefClass("functionWidgetQt",
+##             contains = c("functionWidget", "Qt"))
+
+
+setMethod("Widget", "PropertySet", function(obj, ...){
+  new("PropertySetWidgetQt", obj, ...)
+})
+setMethod("Widget", "Color", function(obj, ...){
+  new("ColorWidgetQt", obj, ...)
+})
+setMethod("Widget", "ColorEnum", function(obj, ...){
+  new("ColorEnumWidgetQt", obj, ...)
+})
+setMethod("Widget", "GlyphEnum", function(obj, ...){
+  new("GlyphEnumWidgetQt", obj, ...)
+})
+setMethod("Widget", "SingleEnum", function(obj, ...){
+  new("SingleEnumWidgetQt", obj, ...)
+})
+setMethod("Widget", "MultipleEnum", function(obj, ...){
+  new("MultipleEnumWidgetQt", obj, ...)
+})
+setMethod("Widget", "PositiveInteger", function(obj, ...){
+  new("PositiveIntegerWidgetQt", obj, ...)
+})
+setMethod("Widget", "NegativeInteger", function(obj, ...){
+  new("NegativeIntegerWidgetQt", obj, ...)
+})
+setMethod("Widget", "NonpositiveInteger", function(obj, ...){
+  new("NonpositiveIntegerWidgetQt", obj, ...)
+})
+setMethod("Widget", "NonnegativeInteger", function(obj, ...){
+  new("NonnegativeIntegerWidgetQt", obj, ...)
+})
+setMethod("Widget", "NumericWithRange", function(obj, ...){
+  new("NumericWithRangeWidgetQt", obj, ...)
+})
+setMethod("Widget", "NumericWithMin0Max1", function(obj, ...){
+  new("NumericWithMin0Max1WidgetQt", obj, ...)
+})
+
+
+setMethod("Widget", "character", function(obj, ...){
+  new("characterWidgetQt", obj, ...)
+})
+
+setMethod("Widget", "logical", function(obj, ...){
+  new("logicalWidgetQt", obj, ...)
+})
+
+## setMethod("widget", "ANY", function(obj, ...){
+##   Widget(obj)$widget()
+## })
+
+
+## setMethod("Widget", "factor", function(obj, ...){
+##   new("factorWidgetQt", ...)
+## })
+
+## setMethod("Widget", "function", function(obj, ...){
+##   new("functionWidgetQt", ...)
+## })

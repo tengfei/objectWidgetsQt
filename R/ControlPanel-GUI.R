@@ -63,72 +63,74 @@ qsetClass("ControlPanel", Qt$QWidget, function(obj, visible = list(),
   ## FIXME: no visible
   # color widgets
   sapply(names(ppt), function(i) {
+    temp <- obj$field(i)
     if(ppt[i] == "Color"){
       l.wid[[i]] <<- ColorWidgetQt(obj, i)
+      ## l.wid[[i]] <<- widget(Widget(temp), i)
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
     if(extends(ppt[i],"ColorEnum")){
       l.wid[[i]] <<- ColorEnumWidgetQt(obj, i)
+      ## l.wid[[i]] <<- widget(Widget(temp), i)      
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
     if(ppt[i] == "character"){
       l.wid[[i]] <<- CharWidgetQt(obj, i)
+      ## l.wid[[i]] <<- widget(Widget(temp), i)      
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
-
     }
     if(ppt[i] == "logical"){
       l.wid[[i]] <<- logicalWidgetQt(obj, i)
+      ## l.wid[[i]] <<- widget(Widget(temp), i) 
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
-    if(ppt[i] == "factor"){
-      warning("not implemented yet")
-    }
-    if(ppt[i] == "function"){
-      ## l.wid[[i]] <<- functionWidgetQt(obj, i)
-      ## l.lab[[i]] <<- ParLabel(obj, i)
-      ## lyt$addRow(l.lab[[i]], l.wid[[i]])
-      message("function not supported yet")
-    }
     if(extends(ppt[i], "NumericWithRange")){
       l.wid[[i]] <<- RangeWidgetQt(obj, i, "double", decimal.extra = decimal.extra)
+      ## l.wid[[i]] <<- widget(Widget(temp), i, "double",
+                            ## decimal.extra = decimal.extra)      
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
     if(extends(ppt[i], "IntegerWithRange")){
       l.wid[[i]] <<- RangeWidgetQt(obj, i, "integer", decimal.extra = decimal.extra)
+      ## l.wid[[i]] <<- widget(Widget(temp), i, "double",
+      ##                       decimal.extra = decimal.extra)      
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
     if(ppt[i] %in% 
        c("PositiveInteger","NonnegativeInteger","NegativeInteger",
          "NonpositiveInteger")){
+      ## l.wid[[i]] <<- widget(Widget(temp), i, substr(ppt[i],1,6))
       l.wid[[i]] <<- IntWidgetQt(obj, i, substr(ppt[i],1,6))
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
 
     }
     if(extends(ppt[i],"SingleEnum") && (!extends(ppt[i],"ColorEnum")) && (!extends(ppt[i],"GlyphEnum"))){
+      ## l.wid[[i]] <<- widget(Widget(temp), i)      
       l.wid[[i]] <<- SingleEnumWidgetQt(obj, i)
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
     if(extends(ppt[i],"MultipleEnum")){
+      ## l.wid[[i]] <<- widget(Widget(temp), i)      
       l.wid[[i]] <<- MultEnumWidgetQt(obj, i)
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
     if(extends(ppt[i],"GlyphEnum")){
+      ## l.wid[[i]] <<- widget(Widget(temp), i)      
       l.wid[[i]] <<- GlyphEnumWidgetQt(obj, i)
       l.lab[[i]] <<- ParLabel(obj, i)
       lyt$addRow(l.lab[[i]], l.wid[[i]])
     }
       ## l.lab[[i]] <<- ParLabel(obj, i)
       ## lyt$addRow(l.lab[[i]], l.wid[[i]])
-
   })
   olyt$addLayout(lyt)
   olyt$addLayout(blyt)
