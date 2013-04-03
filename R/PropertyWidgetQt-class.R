@@ -1,5 +1,3 @@
-setRefClass("PropertySetWidgetQt",
-            contains = c("Qt", "PropertySetWidget"))
 ColorWQT <- qsetClass("ColorWidgetQt", Qt$QWidget, function(obj, par, parent = NULL) {
   super(parent)
   this$obj <- obj
@@ -500,9 +498,11 @@ qsetMethod("setDefault", IntWidgetQt, function() {
 
 
 # widget to handle changing character strings
+## suppose obj is a widget
 qsetClass("CharWidgetQt", Qt$QWidget, function(obj, par, parent = NULL) {
   super(parent)
-  this$obj <- obj; this$par <- par
+  this$obj <- obj
+  this$par <- par
 
   initText <- obj$field(par)
 
@@ -604,6 +604,27 @@ decimalplaces <- function(x) {
         return(0)
     }
 }
+
+setRefClass("PropertySetWidgetQt",
+            fields = list(
+              ps = "PropertySet"
+              ),
+            method = list(
+              initialize = function(obj, ...){
+                .self$ps <- obj
+                callSuper(...)
+              }
+              ),
+            contains = c("Qt", "Widget", "PropertySet"))
+setMethod("widget", "PropertySet", function(obj, ...){
+  ControlPanel(obj, ...)
+})
+setMethod("Widget", "PropertySet", function(obj, ...){
+  new("PropertySetWidgetQt", obj, ...)
+})
+setMethod("widget", "PropertySetWidgetQt", function(obj, ...){
+  ControlPanel(obj$ps, ...)
+})
 
 
 
@@ -715,9 +736,7 @@ setMethod("widget", "characterWidgetQt", function(obj, ...){
 ##             contains = c("functionWidget", "Qt"))
 
 
-setMethod("Widget", "PropertySet", function(obj, ...){
-  new("PropertySetWidgetQt", obj, ...)
-})
+
 setMethod("Widget", "Color", function(obj, ...){
   new("ColorWidgetQt", obj, ...)
 })

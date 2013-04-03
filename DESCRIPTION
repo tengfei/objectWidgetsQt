@@ -10,11 +10,9 @@ License: GPL (>= 2)
 Collate: AllClasses.R
 	 PropertyWidgetQt-class.R
 	 ControlPanel-GUI.R
+	 IModeQt.R
 	 AppWindow-GUI.R
 	 GUI-selector.R
-	 SearchBar-GUI.R
-	 SearchBarList-GUI.R
-	 SimpleViewer-GUI.R
 	 utils.R
 	 
 

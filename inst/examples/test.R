@@ -49,7 +49,12 @@ gpar.gen <- setRefClass("GraphicPars", fields = properties(list(a = "character",
 obj <- gpar.gen$new()
 obj$properties()
 obj$a
-objectWidgetsQt:::ControlPanel(obj)
+class(obj)
+
+test <- Widget(obj)
+class(test)
+widget(test)
+ControlPanel(obj)
 ## p
 
 mf <- qdata(mtcars)
